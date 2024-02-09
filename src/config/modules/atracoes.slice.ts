@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Atracao } from "../../models/atracao.model";
 
 const state: Atracao[] = [
@@ -50,8 +50,33 @@ const state: Atracao[] = [
 const atracoesSlice = createSlice({
     name: "atracoes",
     initialState: state,
-    reducers: {}
+    reducers: {
+        curtirAtracao: (state, action: PayloadAction<string>) => {
+            return state.map((item) => {
+
+
+                if (item.id === action.payload) {
+                    const novoItem = { ...item }
+                    novoItem.curtidas++
+                    return novoItem
+                }
+                return item
+            });
+        },
+        descurtirAtracao: (state, action: PayloadAction<string>) => {
+            return state.map((item) => {
+                if (item.id === action.payload) {
+                    const novoItem = { ...item }
+                    novoItem.descurtidas++
+                    return novoItem
+                }
+                return item
+            })
+        }
+    },
 })
 
 
 export default atracoesSlice.reducer
+
+export const { curtirAtracao, descurtirAtracao } = atracoesSlice.actions
